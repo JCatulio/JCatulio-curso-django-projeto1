@@ -20,6 +20,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@900&display=swap" rel="stylesheet">
 
     <title>Recipes</title>
+    
     <style>
         :root {
             --color-primary: #269fe6;
@@ -252,6 +253,25 @@
 
         .recipe-footer a:hover {
             filter: brightness(2);
+        }
+
+        .main-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--color-primary-dark);
+            color: var(--color-white);
+            padding: var(--spacing-gutter-large);
+        }
+
+        .main-footer a {
+            color: var(--color-white);
+            text-decoration: none;
+            transition: all 300ms ease-in-out;
+        }
+
+        .main-footer a:hover {
+            filter: brightness(.8);
         }
     </style>
 </head>
