@@ -1,6 +1,5 @@
 from django.test import TestCase
 from django.urls import resolve, reverse
-
 from recipes import views
 
 
@@ -16,3 +15,11 @@ class RecipeViewsTest(TestCase):
     def test_recipe_detail_view_function_is_correct(self):
         view = resolve(reverse('recipes:recipe', kwargs={'id': 1}))
         self.assertIs(view.func, views.recipes)
+
+    def test_recipe_home_view_return_status_code_200_OK(self):
+        response = self.client.get(reverse('recipes:home'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_recipe_home_view_loads_correct_template(self):
+        response = self.client.get(reverse('recipes:home'))
+        self.assertTemplateUsed(response, 'recipes/pages/home.html')
