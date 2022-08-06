@@ -1,26 +1,9 @@
-import time
 from unittest.mock import patch
 
 import pytest
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from utils.browser import make_chrome_browser
-
-from recipes.templates.recipes.tests.test_recipe_base import RecipeMixin
-
-
-class RecipeBaseFunctionalTest(StaticLiveServerTestCase, RecipeMixin):
-    def setUp(self) -> None:
-        self.browser = make_chrome_browser()
-        return super().setUp()
-
-    def tearDown(self) -> None:
-        self.browser.quit()
-        return super().tearDown()
-
-    def sleep(self, seconds=5):
-        time.sleep(seconds)
+from .base import RecipeBaseFunctionalTest
 
 
 @pytest.mark.functional_test
