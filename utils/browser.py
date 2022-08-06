@@ -10,7 +10,6 @@ CHROMEDRIVER_NAME = 'chromedriver'
 CHROMEDRIVER_PATH = ROOT_PATH / 'bin' / CHROMEDRIVER_NAME
 
 
-# --headless
 def make_chrome_browser(*options):
     chrome_options = webdriver.ChromeOptions()
 
@@ -28,6 +27,6 @@ def make_chrome_browser(*options):
 
 if __name__ == '__main__':
     browser = make_chrome_browser('--headless')
-    browser.get('http://www.udemy.com')
+    browser.get('http://www.udemy.com/')
     sleep(5)
     browser.quit()
