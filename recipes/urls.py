@@ -13,5 +13,5 @@ urlpatterns = [
         'recipes/category/<int:category_id>/',
         views.RecipeListViewCategory.as_view(), name="category"
     ),
-    path('recipes/<int:id>/', views.recipes, name="recipe"),
+    path('recipes/<int:pk>/', views.RecipeDetail.as_view(), name="recipe"),
 ]

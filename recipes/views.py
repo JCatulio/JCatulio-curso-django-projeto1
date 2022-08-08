@@ -2,20 +2,18 @@ import os
 
 from django.db.models import Q
 from django.http.response import Http404
-from django.shortcuts import get_object_or_404, render
-from django.views.generic import ListView
+from django.views.generic import DetailView, ListView
 from utils.pagination import make_pagination
 
 from recipes.models import Recipe
 
-PER_PAGE = os.environ.get('PER_PAGE', 6)
+PER_PAGE = int(os.environ.get('PER_PAGE', 6))
 
 
 class RecipeListViewBase(ListView):
     model = Recipe
     context_object_name = 'recipes'
-    paginate_by = None
-    ordering = ['id']
+    ordering = ['-id']
     template_name = 'recipes/pages/home.html'
 
     def get_queryset(self, *args, **kwargs):
@@ -45,6 +43,15 @@ class RecipeListViewHome(RecipeListViewBase):
 class RecipeListViewCategory(RecipeListViewBase):
     template_name = 'recipes/pages/category.html'
 
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+
+        ctx.update({
+            'title': f'{ctx.get("recipes")[0].category.name} - Category | '
+        })
+
+        return ctx
+
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
         qs = qs.filter(
@@ -55,15 +62,6 @@ class RecipeListViewCategory(RecipeListViewBase):
             raise Http404()
 
         return qs
-
-    def get_context_data(self, *args, **kwargs):
-        ctx = super().get_context_data(*args, **kwargs)
-
-        ctx.update({
-            'title': f'{ctx.get("recipes")[0].category.name} - Category | '
-        })
-
-        return ctx
 
 
 class RecipeListViewSearch(RecipeListViewBase):
@@ -97,14 +95,16 @@ class RecipeListViewSearch(RecipeListViewBase):
         return ctx
 
 
-def recipes(request, id):
-    recipe = Recipe.objects.filter(
-        pk=id, is_published=True
-    ).order_by('-id').first()
+class RecipeDetail(DetailView):
+    model = Recipe
+    context_object_name = 'recipe'
+    template_name = 'recipes/pages/recipe-view.html'
 
-    recipe = get_object_or_404(Recipe, pk=id, is_published=True)
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
 
-    return render(request, 'recipes/pages/recipe-view.html', context={
-        'recipe': recipe,
-        'is_detail_page': True,
-    })
+        ctx.update({
+            'is_detail_page': True
+        })
+
+        return ctx
