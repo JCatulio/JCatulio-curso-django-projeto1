@@ -11,6 +11,10 @@ class Category(models.Model):
         return self.name
 
 
+class RecipeManager(models.Manager):
+    ...
+
+
 class Recipe(models.Model):
     title = models.CharField(max_length=65)
     description = models.CharField(max_length=165)

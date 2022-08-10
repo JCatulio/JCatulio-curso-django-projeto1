@@ -1,14 +1,40 @@
 import os
 
-from django.db.models import Q
+from django.db.models import Q, Value, F
+from django.db.models.functions import Concat
+from django.db.models.aggregates import Count
+from django.forms.models import model_to_dict
+from django.http import JsonResponse
 from django.http.response import Http404
+from django.shortcuts import render
 from django.views.generic import DetailView, ListView
 from utils.pagination import make_pagination
-from django.http import JsonResponse
+
 from recipes.models import Recipe
-from django.forms.models import model_to_dict
 
 PER_PAGE = int(os.environ.get('PER_PAGE', 6))
+
+
+def theory(request, *args, **kwargs):
+    recipes = Recipe.objects.all().annotate(
+        author_full_name=Concat(
+            F('author__first_name'), Value(' '),
+            F('author__last_name'), Value(' ('),
+            F('author__username'), Value(')'),
+        )
+    )
+    number_of_recipes = Recipe.objects.aggregate(Count('id'))
+
+    context = {
+        'recipes': recipes,
+        'number_of_recipes': number_of_recipes['id__count']
+    }
+
+    return render(
+        request,
+        'recipes/pages/theory.html',
+        context=context
+    )
 
 
 class RecipeListViewBase(ListView):
