@@ -40,5 +40,3 @@
       buttonShowMenu.addEventListener('click', showMenu);
     }
   })();
-
-my_scope();
