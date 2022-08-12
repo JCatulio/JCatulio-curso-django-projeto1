@@ -13,7 +13,7 @@ class RecipeModelTest(RecipeTestBase):
         recipe = Recipe(
             category=self.make_category(name='Test Default Category'),
             author=self.make_author(username='newuser'),
-            title='Recipe Title',
+            title='Recipe Title 1',
             description='Recipe Description',
             slug='recipe-slug-for-no-defaults',
             preparation_time=10,
@@ -25,12 +25,6 @@ class RecipeModelTest(RecipeTestBase):
         recipe.full_clean()
         recipe.save()
         return recipe
-
-    def test_recipe_title_raises_error_if_title_has_more_than_65_chars(self):
-        self.recipe.title = 'A' * 70
-
-        with self.assertRaises(ValidationError):
-            self.recipe.full_clean()
 
     @parameterized.expand([
         ('title', 65),

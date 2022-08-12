@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 from recipes import views
-from recipes.templates.recipes.tests.test_recipe_base import RecipeTestBase
+from .test_recipe_base import RecipeTestBase
 
 
 class RecipeDetailViewTest(RecipeTestBase):
