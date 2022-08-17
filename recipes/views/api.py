@@ -4,8 +4,8 @@ from recipes.serializers import RecipeSerializer, TagSerializer
 from rest_framework.decorators import api_view
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from tag.models import Tag
 from rest_framework.viewsets import ModelViewSet
+from tag.models import Tag
 
 
 class RecipeAPIv2Pagination(PageNumberPagination):
