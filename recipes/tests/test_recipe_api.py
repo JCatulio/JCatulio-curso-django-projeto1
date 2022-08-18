@@ -6,8 +6,12 @@ from rest_framework import test
 
 
 class RecipeAPIv2Test(test.APITestCase, RecipeMixin):
-    def get_recipe_api_list(self, reverse_result=None):
+    def get_recipe_reverse_url(self, reverse_result=None):
         api_url = reverse_result or reverse('recipes:recipe-api-list')
+        return api_url
+
+    def get_recipe_api_list(self, reverse_result=None):
+        api_url = self.get_recipe_reverse_url(reverse_result)
         response = self.client.get(api_url)
         return response
 
@@ -63,7 +67,9 @@ class RecipeAPIv2Test(test.APITestCase, RecipeMixin):
         response = self.get_recipe_api_list(reverse_result=api_url)
 
         # We should only see recipes from the wanted category
-        self.assertEqual(
-            len(response.data.get('results')),
-            9
-        )
+        self.assertEqual(len(response.data.get('results')), 9)
+
+    def test_recipe_api_list_user_must_send_jwt_token_to_create(self):
+        api_url = self.get_recipe_reverse_url()
+        response = self.client.post(api_url)
+        self.assertEqual(response.status_code, 401)
